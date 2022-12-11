@@ -1,10 +1,13 @@
 import pandas as pd
 from graphics import *
 import matplotlib.pyplot as plt
+from tkinter import filedialog
 
 def clean_df(file_path):
     #Import the data set
     df = pd.read_csv(file_path)
+
+    og_len = len(df)
 
 
     #Remove unwanted variables
@@ -52,9 +55,9 @@ def clean_df(file_path):
 
 
     #rows before: 10000
-    #rows after: 5588
+    #rows after: 5217
 
-    #print(len(df))
+    print(f"Dataset successfully cleaned ({og_len} --> {len(df)} rows).")
     #print(df.head())
 
     #Save cleaned data set as csv
@@ -66,9 +69,8 @@ def clean_df(file_path):
 
     return df
 
-    
 
-def interactive(pt, win, box1, box2, box3, box4, box5):
+def interactive(pt, box1, box2, box3, box4, box5):
     if pt.getX() > 9 and pt.getX() < 11.5 and pt.getY() > 5.3 and pt.getY() < 6.5:
         #print("Update")
         return "update"
@@ -102,12 +104,9 @@ def interactive(pt, win, box1, box2, box3, box4, box5):
         box5.setFill("orange")
         return "average_review_rating"
 
-    else:
-        print("Error")
-
 def get_insights(insight_text):
 
-    #Add linebreak to insight_text every 19 words
+    #Add linebreak to insight_text every 8 words to make it fit in the window
     insight_text = insight_text.split()
     insight_text = [insight_text[i:i+8] for i in range(0, len(insight_text), 8)]
     insight_text = [" ".join(x) for x in insight_text]
@@ -127,8 +126,6 @@ def get_insights(insight_text):
     title.draw(win2)
     
     #Create a text box to display insights
-
-
     insight_box = Text(Point(300, 250), insight_text)
     insight_box.setSize(15)
     insight_box.setStyle("bold")
@@ -368,11 +365,6 @@ def draw_graphs(win, command):
 
 def get_file():
 
-    import tkinter as tk
-    from tkinter import filedialog
-
-    
-
     win = GraphWin("Amazon FBA Product Finder", 800, 400)
     win.setCoords(0.0, 0.0, 8.0, 4.0)
 
@@ -431,9 +423,15 @@ def get_file():
         if pt.getX() > 2.5 and pt.getX() < 4.5 and pt.getY() > 1 and pt.getY() < 1.5:
             
         
-            root = tk.Tk()
-            root.withdraw()
+            #root = tk.Tk()
+            #root.withdraw()
             file = filedialog.askopenfilename()
+
+            
+
+            #Check if file ends in .csv
+
+            
 
             if ".csv" not in file:
                 #print("Error: File must be a csv file")
@@ -489,10 +487,6 @@ def gui():
     logo = Image(Point(1.5, 6.5), "amazon2.png")
     
     logo.draw(win)
-
-    #Creating Rectangle where graph will be inserted
-    #box = Rectangle(Point(1, 1), Point(9, 5)).draw(win)
-    #box.setFill("white")
 
     #Creating Variables
     variables = Text(Point(10.5, 5), "Select Variables")
@@ -574,7 +568,7 @@ def gui():
     insights_window = None
     while True:
         pt = win.getMouse()
-        response = interactive(pt, win, box1, box2, box3, box4, box5)
+        response = interactive(pt, box1, box2, box3, box4, box5)
 
         if response != "update" and response != "quit" and response != None:
             
@@ -609,6 +603,6 @@ def gui():
 if __name__ == "__main__":
 
     selected_file_path = get_file()
-    cleaned_df = clean_df("amazon_co-ecommerce_sample.csv")
+    cleaned_df = clean_df(selected_file_path)
 
     gui()
