@@ -46,6 +46,7 @@ def clean_df(file_path):
 
     df.drop(columns=['description','amazon_category_and_sub_category'])
 
+    print(f"Dataset successfully cleaned ({og_len} --> {len(df)} rows).")
     return df
 
 
