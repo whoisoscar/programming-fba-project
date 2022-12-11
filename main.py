@@ -6,9 +6,7 @@ from tkinter import filedialog
 def clean_df(file_path):
     #Import the data set
     df = pd.read_csv(file_path)
-
     og_len = len(df)
-
 
     #Remove unwanted variables
     df = df.drop(columns=['uniq_id', 'manufacturer', 'customers_who_bought_this_item_also_bought','product_information','product_description','items_customers_buy_after_viewing_this_item','customer_questions_and_answers','customer_reviews','sellers'])
@@ -20,8 +18,6 @@ def clean_df(file_path):
     df = df[(df.number_of_answered_questions.notnull())]
     df = df[(df.average_review_rating.notnull())]
     df = df[(df.amazon_category_and_sub_category.notnull())]
-    #df = df[(df.amazon_category_and_sub_category.notnull())]
-
 
     #Strip price variable of any string
     df["price"] = df["price"].str.replace("£","").str.replace(",","").astype(float)
@@ -50,57 +46,34 @@ def clean_df(file_path):
 
     df.drop(columns=['description','amazon_category_and_sub_category'])
 
-    #print number of unique categories
-    #print(len(df.category.unique()))
-
-
-    #rows before: 10000
-    #rows after: 5217
-
-    print(f"Dataset successfully cleaned ({og_len} --> {len(df)} rows).")
-    #print(df.head())
-
-    #Save cleaned data set as csv
-    #df.to_csv("cleaned_data.csv", index=False)
-
-    #Get number of null categories
-    #print(df.category.isnull().sum())
-
-
     return df
 
 
 def interactive(pt, box1, box2, box3, box4, box5):
     if pt.getX() > 9 and pt.getX() < 11.5 and pt.getY() > 5.3 and pt.getY() < 6.5:
-        #print("Update")
         return "update"
         
     elif pt.getX() > 0 and pt.getX() < 1 and pt.getY() > 0 and pt.getY() < 1:
-        #print("Quit")
         return "quit"
 
     elif pt.getX() > 9 and pt.getX() < 9.5 and pt.getY() > 3.9 and pt.getY() < 4.2:
-        #print("Review")
         box1.setFill("orange")
         return "number_of_reviews"
 
     elif pt.getX() > 9 and pt.getX() < 9.5 and pt.getY() > 3.2 and pt.getY() < 3.5:
-        #print("Category")
         box2.setFill("orange")
         return "category"
 
     elif pt.getX() > 9 and pt.getX() < 9.5 and pt.getY() > 2.5 and pt.getY() < 2.8:
-        #print("Price")
+
         box3.setFill("orange")
         return "price"
 
-    elif pt.getX() > 9 and pt.getX() < 9.5 and pt.getY() > 1.8 and pt.getY() < 2.1:
-        #print("Description")
+    elif pt.getX() > 9 and pt.getX() < 9.5 and pt.getY() > 1.7 and pt.getY() < 2.1:
         box4.setFill("orange")
         return "description_length"
 
-    elif pt.getX() > 9 and pt.getX() < 9.5 and pt.getY() > 1.1 and pt.getY() < 1.4:
-        #print("Average Review Rating")
+    elif pt.getX() > 9 and pt.getX() < 9.5 and pt.getY() > 1 and pt.getY() < 1.4:
         box5.setFill("orange")
         return "average_review_rating"
 
@@ -139,10 +112,7 @@ def get_insights(insight_text):
 
 def draw_graphs(win, command):
     
-    #print(command)
     if "number_of_reviews" in command and "average_review_rating" in command:
-        
-        #print("Drawing graph with number of reviews and average review rating")
         # Scatter plot showing the relationship between the number of reviews and the average review
         plt.scatter(cleaned_df["number_of_reviews"], cleaned_df["average_review_rating"])
         plt.title("Number of reviews vs average review rating")
@@ -152,15 +122,13 @@ def draw_graphs(win, command):
         #Save plot as "graph.png"
         plt.savefig("graph.png", bbox_inches='tight')
 
-        #clear plt
+        #clear plot
         plt.clf()
 
         win2 = get_insights("This plot will help you see if there is a relationship between the number of reviews a product has and its average review rating. If there is a strong positive relationship (i.e., the more reviews a product has, the higher its average review rating), this could be a good indication that the product is popular and well-liked by customers.")
 
 
     elif "number_of_reviews" in command and "price" in command:
-        #print("Drawing graph with number of reviews and price")
-
         # Scatter plot showing the relationship between the number of reviews and the price
         plt.scatter(x=cleaned_df["number_of_reviews"], y=cleaned_df["price"])
         plt.title("Number of reviews vs price")
@@ -170,23 +138,19 @@ def draw_graphs(win, command):
         #Save plot as "graph.png"
         plt.savefig("graph.png", bbox_inches='tight')
 
-        #clear plt
+        #clear plot
         plt.clf()
 
         win2 = get_insights("If there is a positive relationship between the number of reviews and the price of a product, this could indicate that products with higher prices tend to have more reviews. This could be due to a variety of factors, such as the quality of the product, the popularity of the product, or the overall satisfaction of customers.")
 
 
     elif "number_of_reviews" in command and "category" in command:
-        #print("Drawing graph with number of reviews and category")
-
-        # Bar plot showing the relationship between the number of reviews and the category
-        
+        #Bar plot showing the relationship between the number of reviews and the category
         #filter any products with less than 10 reviews
         temp_df = cleaned_df[cleaned_df["number_of_reviews"] > 10]
         
         #Group by category and do average number of reviews
         temp_df = temp_df.groupby("category").agg({"number_of_reviews": "mean"}).reset_index()
-
 
         plt.bar(x=temp_df["category"], height=temp_df["number_of_reviews"])
 
@@ -199,15 +163,13 @@ def draw_graphs(win, command):
         #Save plot as "graph.png" in full size
         plt.savefig("graph.png", bbox_inches='tight')
 
-        #clear plt
+        #clear plot
         plt.clf()
 
         win2 = get_insights("Categories that have less than 10 reviews are considered irrelevant and are removed. This could provide an overall picture of which categories of products are most popular with customers and which categories receive the most reviews.  This could provide insight into which categories of products tend to receive the most reviews on average. This information could be useful for identifying trends and patterns in customer behavior and for making decisions about which categories of products to focus on in the future.")
 
 
     elif "number_of_reviews" in command and "description_length" in command:
-        #print("Drawing graph with number of reviews and description length")
-
         # Scatter plot showing the relationship between the number of reviews and the description length
         plt.scatter(cleaned_df["number_of_reviews"], cleaned_df["description_length"])
         plt.title("Number of reviews vs description length")
@@ -223,8 +185,6 @@ def draw_graphs(win, command):
         win2 = get_insights("If there is a positive relationship between the number of reviews and the description length of a product, this could indicate that products with longer descriptions tend to have more reviews. This could be because longer descriptions provide more information about the product, which can help to convince customers to leave reviews. Alternatively, it could be because products with longer descriptions tend to be of higher quality, which could make customers more likely to leave positive reviews.")
 
     elif "price" in command and "average_review_rating" in command:
-        #print("Drawing graph with price and average review rating")
-
         # Scatter plot showing the relationship between the average review and the price
         plt.scatter(x=cleaned_df["average_review_rating"], y=cleaned_df["price"])
         plt.title("Average review rating vs price")
@@ -234,19 +194,14 @@ def draw_graphs(win, command):
         #Save plot as "graph.png"
         plt.savefig("graph.png", bbox_inches='tight')
 
-        #clear plt
+        #clear plot
         plt.clf()
 
         win2 = get_insights("This plot will help you see if there is a relationship between the price of a product and its average review rating. If there is a strong negative relationship (i.e., the higher the price of a product, the lower its average review rating), this could be a good indication that customers are not willing to pay a high price for a product with a low average review rating.")
 
     elif "average_review_rating" in command and "category" in command:
-        #print("Drawing graph with average review rating and category")
-
         # Bar plot showing the relationship between average review rating and the category
-        
         temp_df = cleaned_df.groupby("category").agg({"average_review_rating": "mean"}).reset_index()
-
-
         plt.bar(x=temp_df["category"], height=temp_df["average_review_rating"])
 
         #add 
@@ -264,7 +219,6 @@ def draw_graphs(win, command):
         win2 = get_insights("This shows the total number of reviews for each category of product. This could provide insight into which categories of products tend to receive the most reviews in total. This information could be useful for identifying trends and patterns in customer behavior and for making decisions about which categories of products to focus on in the future.")
 
     elif "average_review_rating" in command and "description_length" in command:
-        #print("Drawing graph with average review rating and description length")
         # Scatter plot showing the relationship between the average review and the description length
         plt.scatter(x=cleaned_df["average_review_rating"], y=cleaned_df["description_length"])
         plt.title("Average review rating vs description length")
@@ -280,13 +234,8 @@ def draw_graphs(win, command):
         win2 = get_insights("This plot will help you see if there is a relationship between the length of the product description and the average review rating. If there is a strong positive relationship (i.e., the longer the product description, the higher the average review rating), this could be a good indication that customers find the longer product descriptions more helpful, and that this has a positive impact on the product's average review rating.")
 
     elif "price" in command and "category" in command:
-        #print("Drawing graph with price and category")
-
-        # Bar plot showing the relationship between price and the category
-        
+        #Bar plot showing the relationship between price and the category
         temp_df = cleaned_df.groupby("category").agg({"price": "mean"}).reset_index()
-
-
         plt.bar(x=temp_df["category"], height=temp_df["price"])
 
         #add 
@@ -304,9 +253,7 @@ def draw_graphs(win, command):
         win2 = get_insights("This could provide an overall picture of which categories of products tend to be the most expensive. This information could be useful for identifying which categories of products are the most profitable and which categories may need to be adjusted in order to increase sales. Additionally, this information could be useful for identifying trends and patterns in customer behavior and for making decisions about which categories of products to focus on in the future.")
 
     elif "price" in command and "description_length" in command:
-        #print("Drawing graph with price and description length")
-
-        # Scatter plot showing the relationship between the average review and the description length
+        #Scatter plot showing the relationship between the average review and the description length
 
         #Filter description length to be less than 5000
         temp_df = cleaned_df[cleaned_df["description_length"] > 500]
@@ -324,10 +271,7 @@ def draw_graphs(win, command):
         win2 = get_insights("If there is a positive relationship between the price and the description length of a product, this could indicate that products with longer descriptions tend to have higher prices. This could be because longer descriptions provide more information about the product, which can help to convince customers to pay a higher price. Alternatively, it could be because products with longer descriptions tend to be of higher quality, which could make customers willing to pay a higher price.")
 
     elif "category" in command and "description_length" in command:
-        #print("Drawing graph with category and description length")
-
-        # Bar plot showing the relationship between description length and the category
-
+        #Bar plot showing the relationship between description length and the category
         temp_df = cleaned_df.groupby("category").agg({"description_length": "mean"}).reset_index()
 
         #filter any products with less than 10 reviews
@@ -347,8 +291,6 @@ def draw_graphs(win, command):
 
         win2 = get_insights("Categories that have less than 500 reviews are considered irrelevant and are removed. This could provide an overall picture of which categories of products tend to have the longest descriptions. This information could be useful for identifying which categories of products are the most detailed and which categories may need improvement in order to provide more information to customers.")
 
-
-
     #Insert the graphs inside the window
 
     #Draw white rectangle behind the graph to cover previous graph
@@ -367,22 +309,6 @@ def get_file():
 
     win = GraphWin("Amazon FBA Product Finder", 800, 400)
     win.setCoords(0.0, 0.0, 8.0, 4.0)
-
-    """# Draw vertical lines
-    Line(Point(1, 0), Point(1, 4)).draw(win)
-    Line(Point(2, 0), Point(2, 4)).draw(win)
-    Line(Point(3, 0), Point(3, 4)).draw(win)
-    Line(Point(4, 0), Point(4, 4)).draw(win)
-    Line(Point(5, 0), Point(5, 4)).draw(win)
-    Line(Point(6, 0), Point(6, 4)).draw(win)
-    Line(Point(7, 0), Point(7, 4)).draw(win)
-
-    # Draw horizontal lines
-    Line(Point(0, 1), Point(8, 1)).draw(win)
-    Line(Point(0, 2), Point(8, 2)).draw(win)
-    Line(Point(0, 3), Point(8, 3)).draw(win)"""
-
-    
 
     #Creating Title
     title = Text(Point(4, 3.5), "Amazon Product Finder")
@@ -405,7 +331,6 @@ def get_file():
     description.setTextColor("grey")
 
     description.draw(win)
-    
 
     #Create a button to select a file
     button = Rectangle(Point(3, 1), Point(5, 1.5))
@@ -421,20 +346,11 @@ def get_file():
     while True:
         pt = win.getMouse()
         if pt.getX() > 2.5 and pt.getX() < 4.5 and pt.getY() > 1 and pt.getY() < 1.5:
-            
-        
-            #root = tk.Tk()
-            #root.withdraw()
+
             file = filedialog.askopenfilename()
 
-            
-
             #Check if file ends in .csv
-
-            
-
             if ".csv" not in file:
-                #print("Error: File must be a csv file")
                 #Draw error message
                 error = Text(Point(4, 0.5), "Error: File must be a csv file")
                 error.draw(win)
@@ -444,36 +360,14 @@ def get_file():
                 error.setTextColor("red")
                 continue
 
-            #print("File Selected")
             win.close()
             return file
 
 
 def gui():
     win = GraphWin("Amazon FBA Product Finder", 1200, 700)
-    
+    win.setBackground("white")
     win.setCoords(0.0, 0.0, 12.0, 7.0)
-
-    """# Draw vertical lines
-    Line(Point(1, 0), Point(1, 7)).draw(win)
-    Line(Point(2, 0), Point(2, 7)).draw(win)
-    Line(Point(3, 0), Point(3, 7)).draw(win)
-    Line(Point(4, 0), Point(4, 7)).draw(win)
-    Line(Point(5, 0), Point(5, 7)).draw(win)
-    Line(Point(6, 0), Point(6, 7)).draw(win)
-    Line(Point(7, 0), Point(7, 7)).draw(win)
-    Line(Point(8, 0), Point(8, 7)).draw(win)
-    Line(Point(9, 0), Point(9, 7)).draw(win)
-    Line(Point(10, 0), Point(10, 7)).draw(win)
-    Line(Point(11, 0), Point(11, 7)).draw(win)
-
-    # Draw horizontal lines
-    Line(Point(0, 1), Point(12, 1)).draw(win)
-    Line(Point(0, 2), Point(12, 2)).draw(win)
-    Line(Point(0, 3), Point(12, 3)).draw(win)
-    Line(Point(0, 4), Point(12, 4)).draw(win)
-    Line(Point(0, 5), Point(12, 5)).draw(win)
-    Line(Point(0, 6), Point(12, 6)).draw(win)"""
 
     #Creating Title
     title = Text(Point(4.3, 6.5), "Amazon Product Finder")
