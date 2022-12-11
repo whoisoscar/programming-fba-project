@@ -54,8 +54,49 @@ def clean_df():
     print(len(df))
     print(df.head())
 
-def gui():
+def interactive(pt, win, box1, box2, box3, box4, box5):
+    command = ""
+    if pt.getX() > 9 and pt.getX() < 11.5 and pt.getY() > 5.3 and pt.getY() < 6.5:
+        print("Update")
+        update(win, box1, box2, box3, box4, box5)
+    elif pt.getX() > 0 and pt.getX() < 1 and pt.getY() > 0 and pt.getY() < 1:
+        print("Quit")
+        win.close()
+    elif pt.getX() > 9 and pt.getX() < 9.5 and pt.getY() > 3.9 and pt.getY() < 4.2:
+        print("Review")
+        box1.setFill("orange")
+        command += "Review"
+    elif pt.getX() > 9 and pt.getX() < 9.5 and pt.getY() > 3.2 and pt.getY() < 3.5:
+        print("Category")
+        box2.setFill("orange")
+        command += "Category"
+    elif pt.getX() > 9 and pt.getX() < 9.5 and pt.getY() > 2.5 and pt.getY() < 2.8:
+        print("Price")
+        box3.setFill("orange")
+        command += "Price"
+    elif pt.getX() > 9 and pt.getX() < 9.5 and pt.getY() > 1.8 and pt.getY() < 2.1:
+        print("Description")
+        box4.setFill("orange")
+        command += "Description"
+    elif pt.getX() > 9 and pt.getX() < 9.5 and pt.getY() > 1.1 and pt.getY() < 1.4:
+        print("Manufacturer")
+        box5.setFill("orange")
+        command += "Manufacturer"
+    else:
+        print("Error")
 
+def update(win, box1, box2, box3, box4, box5):
+    boxes = [box1, box2, box3, box4, box5]
+    close2 = False
+    for i in boxes:
+        i.setFill("white")
+    while close2 == False:
+        print("graph something now")
+        pt = win.getMouse()
+        interactive(pt, win, box1, box2, box3, box4, box5)
+
+
+def gui():
     win = GraphWin("Message Encoder", 1200, 700)
     
     win.setCoords(0.0, 0.0, 12.0, 7.0)
@@ -81,39 +122,107 @@ def gui():
     Line(Point(0, 5), Point(12, 5)).draw(win)
     Line(Point(0, 6), Point(12, 6)).draw(win)
 
-    """# Draw the interface
-    Text(Point(1, 3.2), " Message:").draw(win)
-    Text(Point(1, 2.8), " Encryption Key:").draw(win)
-    Text(Point(1, 1), "Encrypted Message:").draw(win)
-    inputText = Entry(Point(2.25, 3.2), 5)
-    inputText.setText("hello")
-    inputText.draw(win)
+    #Creating Title
+    title = Text(Point(3.3, 6.5), "Amazon Product Finder")
+    title.draw(win)
+    title.setFace("courier")
+    title.setSize(36)
+    title.setStyle("bold")
+    title.setTextColor("grey")
 
-    inputKey = Entry(Point(2.25, 2.8), 5)
-    inputKey.setText("2")
-    inputKey.draw(win)
+    #Creating Rectangle where graph will be inserted
+    box = Rectangle(Point(1, 1), Point(9, 5)).draw(win)
+    box.setFill("white")
 
-    outputText = Text(Point(2.25, 1),"")
-    outputText.draw(win)
-    button = Text(Point(1.5, 2.0), "Encrypt It")
-    button.draw(win)
-    Rectangle(Point(1, 1.5), Point(2, 2.5)).draw(win)
+    #Creating Variables
+    variables = Text(Point(10.5, 5), "Select Variables")
+    variables.draw(win)
+    variables.setFace("courier")
+    variables.setSize(28)
+    variables.setStyle("bold")
+    variables.setTextColor("grey")
+    maximum = Text(Point(10.2, 4.7), "Maximum 3 Variables")
+    maximum.draw(win)
+    maximum.setFace("courier")
+    maximum.setSize(18)
+    maximum.setStyle("bold")
+    maximum.setTextColor("grey")
 
-    # wait for a mouse click
-    win.getMouse()
+    #Creating Boxes for clicking on variables
+    box1 = Rectangle(Point(9.2, 3.9), Point(9.5, 4.2)).draw(win)
+    box1.setFill("white")
+    text1 = Text(Point(10.2, 4.05), "Review")
+    text1.draw(win)
+    text1.setFace("courier")
+    text1.setSize(25)
+    text1.setStyle("bold")
+    text1.setTextColor("grey")
 
-    # convert inputs
-    original_message = str(inputText.getText())
-    encryption_key = int(inputKey.getText())
-    encrypted_message = encryptor(original_message, encryption_key)
+    box2 = box1.clone()
+    box2.move(0, -0.75)
+    box2.draw(win)
+    text2 = text1.clone()
+    text2.move(0.15, -0.75)
+    text2.setText("Category")
+    text2.draw(win)
 
-    # display output and change button
-    outputText.setText(encrypted_message)
-    button.setText("Close")"""
+    box3 = box2.clone()
+    box3.move(0, -0.75)
+    box3.draw(win)
+    text3 = text2.clone()
+    text3.move(-0.2, -0.75)
+    text3.setText("Price")
+    text3.draw(win)
 
-    # wait for click and then quit
+    box4 = box3.clone()
+    box4.move(0, -0.75)
+    box4.draw(win)
+    text4 = text3.clone()
+    text4.move(0.45, -0.7)
+    text4.setText("Description")
+    text4.draw(win)
+    text4_1 = text4.clone()
+    text4_1.move(0, -0.2)
+    text4_1.setText("Length")
+    text4_1.draw(win)
+
+    box5 = box4.clone()
+    box5.move(0, -0.7)
+    box5.draw(win)
+    text5 = text4.clone()
+    text5.move(0.1, -0.8)
+    text5.setText("Manufacturer")
+    text5.draw(win)
+
+    #Creating Update Button
+    update = Rectangle(Point(9.2, 5.5), Point(11.5, 6.5)).draw(win)
+    update.setFill("orange")
+    update_text = Text(Point(10.35, 6), "Update")
+    update_text.draw(win)
+    update_text.setFace("courier")
+    update_text.setSize(25)
+    update_text.setStyle("bold")
+    update_text.setTextColor("black")
+
+    #Creating Quit Button
+    quit = Rectangle(Point(0, 0), Point(0.8, 0.8)).draw(win)
+    quit.setFill("grey")
+    quit_text = Text(Point(0.4, 0.4), "Quit")
+    quit_text.draw(win)
+    quit_text.setFace("courier")
+    quit_text.setSize(25)
+    quit_text.setStyle("bold")
+    quit_text.setTextColor("black")
+
+    while True:
+        pt = win.getMouse()
+        interactive(pt, win, box1, box2, box3, box4, box5)
+
+
+
+    #Avoing the program from closing
     win.getMouse()
     win.close()
 
-
 gui()
+
