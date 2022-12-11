@@ -1,35 +1,64 @@
 # Background
-text here
+A simple graphics user interface (GUI) for Amazon FBA (Fulfillment by Amazon) sellers to help them make better decisions when it comes to their inventory. 
+The app allows the user to upload a dataset of amazon products and upon variable selection, it will generate graphs and insights to help the user see which products, categories or any ther indicators drive a successful product.
+
+Limitations:
+- The app only works if the imputted dataset is in the same format as the one provided in the repository.
+    - This dataset only contains 10,000 products and is from the Amazon.co.uk marketplace (2017).
+
+*Disclosure: the app was developped on MacOS Monterey 12.4 using Python 3.7.3*
+
+## File Architecture
+- `main.py` - The main file that runs the app.
+- `amaon_co-ecommerce_sample.csv` - The dataset used for the app.
+- any other files are self-explanatory.
+
+## The Dataset
 
 
-# First-time install
+# Installation & Usage
+*Note: all code below is intended to be run in the terminal/command line*
+## First-time install
 
-## Clone files
-To install files:
+Clone the files:
 `````
-git clone https://github.com/whoisoscar/
+git clone https://github.com/whoisoscar/programming-fba-project
 `````
 
-## Create and activate Virtual Enviornment
-Creating it:
+**Create and activate a Virtual Environment**
+
+Creating the venv:
 `````
-cd LaCasa
+cd programming-fba-project
 python3 -m venv ./project
 `````
-Activating it (each time you open the folder):
+Activating the venv (each time you open the folder):
 ````
 source ./project/bin/activate
 ````
-## Install modules
-To Install Required Modules:
+**Install modules**
+
+To install required modules:
 `````
 pip install -r requirements.txt
 `````
-# Usage
-
+## Usage
 `````
 python3 main.py
 `````
 
-# To-do
-- [ ] 
+# Further improvements
+- [ ] Make the app more user-friendly
+- [ ] Add more graphs and variables
+- [ ] Make the app fetch the data from Amazon's API in real time rather than relying on a dataset.
+
+# Resources Used
+
+
+# Credits
+This project was created for our Programming for Data Management & Analysis course at IE University. The project was created by:
+- Duarte Barbosa
+- Joaquín de Tord
+- Giacomo Pedersoli
+- Oscar Tluszcz
+- Simão Varandas
