@@ -2,6 +2,26 @@
 A simple graphics user interface (GUI) for Amazon FBA (Fulfillment by Amazon) sellers to help them make better decisions when it comes to their inventory. 
 The app allows the user to upload a dataset of amazon products and upon variable selection, it will generate graphs and insights to help the user see which products, categories or any ther indicators drive a successful product.
 
+<table>
+  <tr>
+    <td>
+      <img src="https://i.imgur.com/0csr7cJ.png" alt="Lorem ipsum" title="Lorem ipsum">
+    </td>
+    <td>
+      <img src="https://i.imgur.com/YqvtFy5.png" alt="Dolor sit" title="Dolor sit">
+    </td>
+    <td>
+      <img src="https://i.imgur.com/iamOyG2.png" alt="Amet consectetur" title="Amet consectetur">
+    </td>
+  </tr>
+
+  <tr>
+    <td>Dataset Selection</td>
+    <td>Main Screen</td>
+    <td>Insights Page</td>
+  </tr>
+</table>
+
 Limitations:
 - The app only works if the imputted dataset is in the same format as the one provided in the repository.
     - This dataset only contains 10,000 products and is from the Amazon.co.uk marketplace (2017).
