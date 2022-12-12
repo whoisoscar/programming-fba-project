@@ -2,7 +2,6 @@ import pandas as pd
 from graphics import *
 import matplotlib.pyplot as plt
 from tkinter import filedialog
-import numpy as np
 
 def clean_df(file_path):
     #Import the data set
@@ -119,19 +118,13 @@ def draw_graphs(graphs_window, command, titles):
     win = graphs_window.win
 
     if "number_of_reviews" in command and "average_review_rating" in command:
-
-        #Filter any product with less than 100 reviews
-        temp_df = cleaned_df[cleaned_df["number_of_reviews"] > 100]
-
         # Scatter plot showing the relationship between the number of reviews and the average review
-        plt.scatter(temp_df["number_of_reviews"], temp_df["average_review_rating"])
+        plt.scatter(cleaned_df["number_of_reviews"], cleaned_df["average_review_rating"])
 
-        #Add regression line
-        m, b = np.polyfit(temp_df["number_of_reviews"], temp_df["average_review_rating"], 1)
-        plt.plot(temp_df["number_of_reviews"], m*temp_df["number_of_reviews"] + b, color="red")
-
+        
 
         if titles != None:
+            
             plt.title(titles["title"])
 
             plt.xlabel(titles["x_axis"])
@@ -155,16 +148,8 @@ def draw_graphs(graphs_window, command, titles):
 
 
     elif "number_of_reviews" in command and "price" in command:
-
-        #Filter any product with less than 100 reviews
-        temp_df = cleaned_df[cleaned_df["number_of_reviews"] > 100]
-
         # Scatter plot showing the relationship between the number of reviews and the price
-        plt.scatter(x=temp_df["number_of_reviews"], y=temp_df["price"])
-
-        #Add regression line
-        m, b = np.polyfit(temp_df["number_of_reviews"], temp_df["price"], 1)
-        plt.plot(temp_df["number_of_reviews"], m*temp_df["number_of_reviews"] + b, color="red")
+        plt.scatter(x=cleaned_df["number_of_reviews"], y=cleaned_df["price"])
 
         if titles != None:
             plt.title(titles["title"])
@@ -191,7 +176,7 @@ def draw_graphs(graphs_window, command, titles):
 
     elif "number_of_reviews" in command and "category" in command:
         #Bar plot showing the relationship between the number of reviews and the category
-        #Filter any products with less than 100 reviews
+        #filter any products with less than 10 reviews
         temp_df = cleaned_df[cleaned_df["number_of_reviews"] > 10]
         
         #Group by category and do average number of reviews
@@ -226,16 +211,8 @@ def draw_graphs(graphs_window, command, titles):
 
 
     elif "number_of_reviews" in command and "description_length" in command:
-
-        #Filter any product with less than 100 reviews and less than 100 characters in the description
-        temp_df = cleaned_df[cleaned_df["description_length"] > 100]
-        temp_df = temp_df[temp_df["number_of_reviews"] > 100]
         # Scatter plot showing the relationship between the number of reviews and the description length
-        plt.scatter(temp_df["number_of_reviews"], temp_df["description_length"])
-
-        #Add regression line
-        m, b = np.polyfit(temp_df["number_of_reviews"], temp_df["description_length"], 1)
-        plt.plot(temp_df["number_of_reviews"], m*temp_df["number_of_reviews"] + b, color="red")
+        plt.scatter(cleaned_df["number_of_reviews"], cleaned_df["description_length"])
 
         if titles != None:
             plt.title(titles["title"])
@@ -262,10 +239,6 @@ def draw_graphs(graphs_window, command, titles):
     elif "price" in command and "average_review_rating" in command:
         # Scatter plot showing the relationship between the average review and the price
         plt.scatter(x=cleaned_df["average_review_rating"], y=cleaned_df["price"])
-
-        #Add regression line
-        m, b = np.polyfit(cleaned_df["average_review_rating"], cleaned_df["price"], 1)
-        plt.plot(cleaned_df["average_review_rating"], m*cleaned_df["average_review_rating"] + b, color="red")
 
         if titles != None:
             plt.title(titles["title"])
@@ -320,15 +293,8 @@ def draw_graphs(graphs_window, command, titles):
             graphs_window.child_insights_window = get_insights("This shows the total number of reviews for each category of product. This could provide insight into which categories of products tend to receive the most reviews in total. This information could be useful for identifying trends and patterns in customer behavior and for making decisions about which categories of products to focus on in the future.")
 
     elif "average_review_rating" in command and "description_length" in command:
-        #Filter out products with less than 100 reviews
-        temp_df = cleaned_df[cleaned_df["number_of_reviews"] > 100]
-
         # Scatter plot showing the relationship between the average review and the description length
-        plt.scatter(x=temp_df["description_length"], y=temp_df["average_review_rating"])
-
-        #Add regression line
-        m, b = np.polyfit(temp_df["description_length"], temp_df["average_review_rating"], 1)
-        plt.plot(temp_df["description_length"], m*temp_df["description_length"] + b, color="red")
+        plt.scatter(x=cleaned_df["average_review_rating"], y=cleaned_df["description_length"])
 
         if titles != None:
             plt.title(titles["title"])
@@ -336,12 +302,12 @@ def draw_graphs(graphs_window, command, titles):
             plt.xlabel(titles["x_axis"])
             plt.ylabel(titles["y_axis"])
         else:
-            plt.title("Description length vs Average review rating")
-            plt.xlabel("Description length")
-            plt.ylabel("Average review")
+            plt.title("Average review rating vs description length")
+            plt.xlabel("Average review")
+            plt.ylabel("Description length")
 
             #Save titles in graphs_window for edit use
-            graphs_window.graph_titles = {"title": "Average review rating vs description length", "x_axis": "Description length", "y_axis": "Average review"}
+            graphs_window.graph_titles = {"title": "Average review rating vs description length", "x_axis": "Average review", "y_axis": "Description length"}
         
         #Save plot as "graph.png"
         plt.savefig("graph.png", bbox_inches='tight')
@@ -387,11 +353,7 @@ def draw_graphs(graphs_window, command, titles):
 
         #Filter description length to be less than 5000
         temp_df = cleaned_df[cleaned_df["description_length"] > 500]
-        plt.scatter(x=temp_df["description_length"], y=temp_df["price"])
-
-        #Add regression line
-        m, b = np.polyfit(temp_df["description_length"], temp_df["price"], 1)
-        plt.plot(temp_df["description_length"], m*temp_df["description_length"] + b, color="red")
+        plt.scatter(x=temp_df["price"], y=temp_df["description_length"])
 
         if titles != None:
             plt.title(titles["title"])
@@ -400,11 +362,11 @@ def draw_graphs(graphs_window, command, titles):
             plt.ylabel(titles["y_axis"])
         else:
             plt.title("Price vs description length")
-            plt.xlabel("Description_length")
-            plt.ylabel("Price")
+            plt.xlabel("Price")
+            plt.ylabel("Description length")
 
             #Save titles in graphs_window for edit use
-            graphs_window.graph_titles = {"title": "Price vs description length", "x_axis": "Description length", "y_axis": "Price"}
+            graphs_window.graph_titles = {"title": "Price vs description length", "x_axis": "Price", "y_axis": "Description length"}
         
         #Save plot as "graph.png"
         plt.savefig("graph.png", bbox_inches='tight')
@@ -698,22 +660,22 @@ class graphsWindow():
         self.box4 = box4
         self.box5 = box5
 
-        self.variables_for_edit = []
         self.graph_variables = []
         self.graph_titles = {"title": "", "x_axis": "", "y_axis": ""}
         self.child_insights_window = None
         self.editable_status = False
 
 def gui():
+
     
     def update_graphs(graph_variables, titles):
-        if graphs_window.editable_status:
-            draw_graphs(graphs_window, graphs_window.variables_for_edit, titles)
+        if titles:
+
+            draw_graphs(graphs_window, graph_variables, titles)
 
             return
-        else:
-            graphs_window.variables_for_edit = graphs_window.graph_variables
-
+        
+        #Close child window if it exists
         try:
             graphs_window.child_insights_window.close()
         except:
@@ -727,21 +689,23 @@ def gui():
         for i in boxes:
             i.setFill("white")
 
-        graphs_window.graph_variables = []
-
     graphs_window = graphsWindow()
 
     while True:
         pt = graphs_window.win.getMouse()
         response = interactive(pt, graphs_window.box1, graphs_window.box2, graphs_window.box3, graphs_window.box4, graphs_window.box5)
 
-        if response != "update" and response != "quit" and response != None != "edit titles":
+        if response != "update" and response != "quit" and response != None and response != "edit titles":
             
+
             graphs_window.graph_variables.append(response)
+            #Ensure the user can only select 2 variables
+            if len(graphs_window.graph_variables) > 2:
+                graphs_window.graph_variables.pop(0)
 
         if response == "update":
             update_graphs(graphs_window.graph_variables, None)
-            graphs_window.editable_status = True
+            #graphs_window.editable_status = True
 
         if response == "edit titles":
 
@@ -758,10 +722,13 @@ def gui():
                     #Get input title
                     inputs = edit_win.get_inputs()
 
+                    graphs_window.graph_titles = inputs
+
                     edit_win.win.close()
                     update_graphs(graphs_window.graph_variables, inputs)
-                    graphs_window.editable_status = False
+                    #graphs_window.editable_status = False
                     break
+
 
         if response == "quit":
             try:
