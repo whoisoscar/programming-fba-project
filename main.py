@@ -742,7 +742,7 @@ def gui():
 
 if __name__ == "__main__":
 
-    #selected_file_path = get_file()
-    cleaned_df = clean_df("amazon_co-ecommerce_sample.csv")
+    selected_file_path = get_file()
+    cleaned_df = clean_df(selected_file_path)
 
     gui()
