@@ -8,10 +8,13 @@ The app allows the user to upload a dataset of amazon products and upon variable
       <img src="https://i.imgur.com/0csr7cJ.png" alt="Lorem ipsum" title="Lorem ipsum">
     </td>
     <td>
-      <img src="https://i.imgur.com/YqvtFy5.png" alt="Dolor sit" title="Dolor sit">
+      <img src="https://i.imgur.com/SMoCfz3.png" alt="Dolor sit" title="Dolor sit">
     </td>
     <td>
       <img src="https://i.imgur.com/iamOyG2.png" alt="Amet consectetur" title="Amet consectetur">
+    </td>
+    <td>
+      <img src="https://i.imgur.com/T0vYhs3.png" alt="Amet consectetur" title="Amet consectetur">
     </td>
   </tr>
 
@@ -19,8 +22,12 @@ The app allows the user to upload a dataset of amazon products and upon variable
     <td>Dataset Selection</td>
     <td>Main Screen</td>
     <td>Insights Page</td>
+     <td>Edit Titles Page</td>
   </tr>
 </table>
+
+<sub>*UI visualisations (click to enlarge)<sub>*
+
 
 Limitations:
 - The app only works if the imputted dataset is in the same format as the one provided in the repository.
