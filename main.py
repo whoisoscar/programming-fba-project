@@ -262,7 +262,7 @@ def draw_graphs(graphs_window, command, titles):
 
     elif "price" in command and "average_review_rating" in command:
         # Scatter plot showing the relationship between the average review and the price
-        
+        plt.scatter(cleaned_df["average_review_rating"], cleaned_df["price"])
         #Add regression line
         m, b = np.polyfit(cleaned_df["average_review_rating"], cleaned_df["price"], 1)
         plt.plot(cleaned_df["average_review_rating"], m*cleaned_df["average_review_rating"] + b, color="red")
